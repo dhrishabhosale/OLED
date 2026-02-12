@@ -70,8 +70,7 @@ except Exception:
 
 diamond_x = 10
 diamond_y = 10
-dx = 2
-dy = 2
+vel = [2, 2]   # [dx, dy] — mutable list avoids any global declaration
 
 # =============================
 # QR IMAGE
@@ -461,19 +460,16 @@ try:
         # STATE: SCREENSAVER (bouncing pic.png sprite)
         # =============================
         elif current_state == STATE_SCREENSAVER:
-            # FIX: declare globals so assignments update the module-level vars
-            global diamond_x, diamond_y, dx, dy
-
             img = Image.new("1", (width, height), 1)
 
-            diamond_x += dx
-            diamond_y += dy
+            diamond_x += vel[0]
+            diamond_y += vel[1]
 
             # Bounce off edges
             if diamond_x <= 0 or diamond_x >= width - bmp_w:
-                dx *= -1
+                vel[0] *= -1
             if diamond_y <= 0 or diamond_y >= height - bmp_h:
-                dy *= -1
+                vel[1] *= -1
 
             # Clamp to bounds
             diamond_x = max(0, min(width - bmp_w, diamond_x))
