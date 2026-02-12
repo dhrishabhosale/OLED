@@ -1,14 +1,9 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-﻿#!/usr/bin/python
-# -*- coding:utf-8 -*-
-
 
 import traceback
 import glob
-
-from PIL import Image,ImageDraw,ImageFont,ImageOps
-
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import SH1106
 import config
 import time
@@ -16,59 +11,40 @@ import subprocess
 import random
 import os
 
-
+# =============================
+# INITIALIZE DISPLAY (ONCE!)
+# =============================
 try:
     disp = SH1106.SH1106()
-
-    print("\r\1.3inch OLED")
-    # Initialize library.
     disp.Init()
-    # Clear display.
     disp.clear()
-
-    print ("***play animation")
+    
+    print("\r1.3inch OLED")
+    print("***play animation")
 
     # ---- ANIMATION PART ----
-
-    # Get all niteXXXX.bmp files and sort them
     frames = sorted(glob.glob("images/nite*.bmp"))
 
     if not frames:
         print("No animation frames found!")
     else:
-       for frame_file in frames:
-           niteAnim = Image.new('1', (disp.width, disp.height), 255)
-
-           bmp = Image.open(frame_file).resize((128, 64))
-           bmp = ImageOps.invert(bmp)
-           niteAnim.paste(bmp, (0, 5))
-
-           disp.ShowImage(disp.getbuffer(niteAnim))
-
-           # Control animation speed (lower = faster)
-           time.sleep(0.00000001)
+        for frame_file in frames:
+            niteAnim = Image.new('1', (disp.width, disp.height), 255)
+            bmp = Image.open(frame_file).resize((128, 64))
+            bmp = ImageOps.invert(bmp)
+            niteAnim.paste(bmp, (0, 5))
+            disp.ShowImage(disp.getbuffer(niteAnim))
+            time.sleep(0.00000001)
+    
     disp.clear()
     niteTxt = Image.new('1', (disp.width, disp.height), "WHITE")
     draw = ImageDraw.Draw(niteTxt)
     font10 = ImageFont.truetype('Monocraft.ttf', 20)
-    draw.text((0,24), 'CRYPTONITE', font = font10, fill = 0)
+    draw.text((0, 24), 'CRYPTONITE', font=font10, fill=0)
     disp.ShowImage(disp.getbuffer(niteTxt))
     time.sleep(3)
-
-except IOError as e:
-    print(e)
-
-disp.RPI.module_exit()
-    
-
-
-# =============================
-# INITIALIZE DISPLAY
-# =============================
-try:
-    disp = SH1106.SH1106()
-    disp.Init()
     disp.clear()
+
 except Exception as e:
     print(f"Error initializing display: {e}")
     exit(1)
