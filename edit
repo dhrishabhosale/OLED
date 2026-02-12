@@ -66,7 +66,7 @@ except:
         print(f"Warning: pic.png not found, using fallback diamond")
         bmp = Image.new("1", (16, 16), 1)
         draw_bmp = ImageDraw.Draw(bmp)
-        draw_bmp.polygon([(8, 0), (16, 8), (8, 16), (0, 8)], outline=0, fill=0)
+        draw_bmp.polygon([(8, 0), (16, 8), (4, 12),(12,12), (0, 8)], outline=0, fill=0)
         bmp_w, bmp_h = bmp.size
 
 diamond_x = 10
